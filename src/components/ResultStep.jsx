@@ -10,21 +10,26 @@ const ResultStep = ({ onBack, onRecalculate }) => {
     <TabLayout
       title="Result"
       bottomActions={
-        <div className="flex justify-between">
-          <button
-            onClick={onBack}
-            className="border border-gray-400 text-black px-6 py-2 rounded hover:bg-gray-100 transition flex items-center gap-1"
-          >
-            ← BACK
-          </button>
-          <button
-            onClick={onRecalculate}
-            className="bg-[#0c4a6e] text-white px-6 py-2 font-semibold rounded hover:bg-[#083a56] transition"
-          >
-            RE-CALCULATE →
-          </button>
-        </div>
-      }
+  <div className="w-full flex justify-end gap-3 items-center">
+    <div>
+      <button
+        onClick={onBack}
+        className="border border-gray-400 text-black px-6 py-2 rounded hover:bg-gray-100 transition flex items-center gap-1"
+      >
+        ← BACK
+      </button>
+    </div>
+    <div>
+      <button
+        onClick={onRecalculate}
+        className="bg-[#0c4a6e] text-white px-6 py-2 font-semibold rounded hover:bg-[#083a56] transition"
+      >
+        RE-CALCULATE →
+      </button>
+    </div>
+  </div>
+}
+
     >
       {/* Result Section */}
       <div className="w-full  pt-10 pb-8">

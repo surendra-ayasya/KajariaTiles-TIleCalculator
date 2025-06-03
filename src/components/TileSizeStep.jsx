@@ -45,7 +45,7 @@ const TileSizeStep = ({ onNext, onBack }) => {
         <TabLayout
             title="Select Size of Tiles"
             bottomActions={
-                <div className="flex justify-between">
+                <div className="flex justify-end gap-3 items-center">
                     <button
                         onClick={onBack}
                         className="border border-gray-400 text-black px-6 py-2 rounded hover:bg-gray-100 transition"

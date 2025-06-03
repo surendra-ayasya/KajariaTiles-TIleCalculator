@@ -29,6 +29,8 @@ const RoomDimensions = ({ onNext }) => {
         if (isValid) onNext();
     };
 
+    const isWall = inputs.mode === "wall" || inputs.mode === "Wall";
+
     return (
         <TabLayout
             title="Room Dimensions"
@@ -44,14 +46,16 @@ const RoomDimensions = ({ onNext }) => {
             }
         >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
-                {/* Room Width */}
+                {/* Width */}
                 <div className="w-full">
                     <div className="flex flex-wrap items-center justify-between gap-2">
-                        <label className="font-semibold text-sm">Room Width</label>
+                        <label className="font-semibold text-sm">
+                            {isWall ? "Wall Width" : "Room Width"}
+                        </label>
                         <select
                             value={inputs.unit}
                             onChange={(e) => handleChange("unit", e.target.value)}
-                            className="bg-gray-100 px-2 py-1 rounded text-sm"
+                            className="bg-gray-100 px-2 py-1 rounded-2xl text-sm"
                         >
                             <option>Feet</option>
                             <option>Meters</option>
@@ -61,25 +65,29 @@ const RoomDimensions = ({ onNext }) => {
                     <div className="flex items-center gap-2 mt-2">
                         <input
                             type="number"
-                            placeholder="ENTER WIDTH"
+                            placeholder={`ENTER ${isWall ? "WALL" : "ROOM"} WIDTH`}
                             value={inputs.roomWidth}
                             onChange={(e) => handleChange("roomWidth", e.target.value)}
                             className="border w-full px-3 py-2 text-sm"
                         />
                     </div>
                     {errors.width && (
-                        <p className="text-red-600 text-xs mt-1">Room width is required.</p>
+                        <p className="text-red-600 text-xs mt-1">
+                            {isWall ? "Wall width is required." : "Room width is required."}
+                        </p>
                     )}
                 </div>
 
-                {/* Room Length */}
+                {/* Length / Height */}
                 <div className="w-full">
                     <div className="flex flex-wrap items-center justify-between gap-2">
-                        <label className="font-semibold text-sm">Room Length</label>
+                        <label className="font-semibold text-sm">
+                            {isWall ? "Wall Height" : "Room Length"}
+                        </label>
                         <select
                             value={inputs.unit}
                             onChange={(e) => handleChange("unit", e.target.value)}
-                            className="bg-gray-100 px-2 py-1 rounded text-sm"
+                            className="bg-gray-100 px-2 py-1 rounded-2xl text-sm"
                         >
                             <option>Feet</option>
                             <option>Meters</option>
@@ -89,14 +97,16 @@ const RoomDimensions = ({ onNext }) => {
                     <div className="flex items-center gap-2 mt-2">
                         <input
                             type="number"
-                            placeholder="ENTER LENGTH"
+                            placeholder={`ENTER ${isWall ? "WALL HEIGHT" : "ROOM LENGTH"}`}
                             value={inputs.roomLength}
                             onChange={(e) => handleChange("roomLength", e.target.value)}
                             className="border w-full px-3 py-2 text-sm"
                         />
                     </div>
                     {errors.length && (
-                        <p className="text-red-600 text-xs mt-1">Room length is required.</p>
+                        <p className="text-red-600 text-xs mt-1">
+                            {isWall ? "Wall height is required." : "Room length is required."}
+                        </p>
                     )}
                 </div>
             </div>

@@ -5,7 +5,7 @@ import RoomDimensions from "../components/RoomDimension";
 import TileSizeStep from "../components/TileSizeStep";
 import ResultStep from "../components/ResultStep";
 import Header from "../components/Header/Header";
-import Footer from "../components/Footer/Footer";
+
 
 const TileCalculator = () => {
   const { inputs, setInputs } = useContext(TileInputsContext);
