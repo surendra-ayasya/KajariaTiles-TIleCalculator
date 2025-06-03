@@ -17,7 +17,7 @@ const TileCalculator = () => {
   };
 
   return (
-    <div className="h-screen  pt-24 mb-20 ">
+    <div className="h-screen  pt-30 mb-36 ">
       <h1 className="text-4xl font-bold text-center m-6  ">
         Calculate Your Tile Needs
       </h1>
