@@ -4,6 +4,8 @@ import TileInputsContext from "../context/TileInputsContext";
 import RoomDimensions from "../components/RoomDimension";
 import TileSizeStep from "../components/TileSizeStep";
 import ResultStep from "../components/ResultStep";
+import Header from "../components/Header/Header";
+import Footer from "../components/Footer/Footer";
 
 const TileCalculator = () => {
   const { inputs, setInputs } = useContext(TileInputsContext);
@@ -15,8 +17,8 @@ const TileCalculator = () => {
   };
 
   return (
-    <>
-      <h1 className="text-4xl font-bold text-center m-6">
+    <div className="h-screen  pt-24 mb-20 ">
+      <h1 className="text-4xl font-bold text-center m-6  ">
         Calculate Your Tile Needs
       </h1>
       <p className="text-center text-gray-500 mt-2">
@@ -44,7 +46,8 @@ const TileCalculator = () => {
         )}
         {/* Add similar block for Step 3 if needed */}
       </div>
-    </>
+
+    </div>
   );
 };
 

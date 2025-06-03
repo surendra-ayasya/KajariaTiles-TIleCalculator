@@ -1,3 +1,5 @@
+import Footer from "./components/Footer/Footer"
+import Header from "./components/Header/Header"
 import TileCalculator from "./pages/TileCalculator"
 
 
@@ -5,7 +7,11 @@ function App() {
 
 
   return (
-    <>  <TileCalculator/>  </>
+    <>
+      <Header />
+      <TileCalculator />
+      <Footer />
+    </>
   )
 }
 
