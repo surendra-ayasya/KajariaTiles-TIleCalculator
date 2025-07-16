@@ -5,6 +5,7 @@ import TabLayout from "../components/TabLayout";
 
 const TileSizeStep = ({ onNext, onBack }) => {
     const { inputs, setInputs } = useContext(TileInputsContext);
+    const wallMode = inputs.mode === "Wall" || inputs.mode === "wall";
     const [errors, setErrors] = useState({
         tileSize: false,
         peicesPerBox: false,
@@ -59,6 +60,11 @@ const TileSizeStep = ({ onNext, onBack }) => {
                         CALCULATE NOW →
                     </button>
                 </div>
+            }
+            bottomNote={
+                wallMode
+                    ? "The tile quantity is an approximate estimate based on standard assumptions (e.g., standard door size: 3.0 feet × 7.0 feet)."
+                    : null
             }
         >
             {/* Tile size dropdown */}

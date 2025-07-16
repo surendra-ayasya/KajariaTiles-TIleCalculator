@@ -4,31 +4,38 @@ import TileInputsContext from "../context/TileInputsContext";
 import TabLayout from "../components/TabLayout";
 
 const ResultStep = ({ onBack, onRecalculate }) => {
+  
   const { inputs } = useContext(TileInputsContext);
+  const wallMode = inputs.mode === "Wall" || inputs.mode === "wall";
 
   return (
     <TabLayout
       title="Result"
       bottomActions={
-  <div className="w-full flex justify-end gap-3 items-center">
-    <div>
-      <button
-        onClick={onBack}
-        className="border border-gray-400 text-black px-6 py-2 rounded hover:bg-gray-100 transition flex items-center gap-1"
-      >
-        ← BACK
-      </button>
-    </div>
-    <div>
-      <button
-        onClick={onRecalculate}
-        className="bg-[#0c4a6e] text-white px-6 py-2 font-semibold rounded hover:bg-[#083a56] transition"
-      >
-        RE-CALCULATE →
-      </button>
-    </div>
-  </div>
-}
+        <div className="w-full flex justify-end gap-3 items-center">
+          <div>
+            <button
+              onClick={onBack}
+              className="border border-gray-400 text-black px-6 py-2 rounded hover:bg-gray-100 transition flex items-center gap-1"
+            >
+              ← BACK
+            </button>
+          </div>
+          <div>
+            <button
+              onClick={onRecalculate}
+              className="bg-[#0c4a6e] text-white px-6 py-2 font-semibold rounded hover:bg-[#083a56] transition"
+            >
+              RE-CALCULATE →
+            </button>
+          </div>
+        </div>
+      }
+      bottomNote={
+        wallMode
+          ? "The tile quantity is an approximate estimate based on standard assumptions (e.g., standard door size: 3.0 feet × 7.0 feet)."
+          : null
+      }
 
     >
       {/* Result Section */}

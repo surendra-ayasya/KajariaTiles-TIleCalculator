@@ -8,6 +8,7 @@ import Header from "../components/Header/Header";
 
 
 const TileCalculator = () => {
+  const { resetInputs } = useContext(TileInputsContext);
   const { inputs, setInputs } = useContext(TileInputsContext);
   const [direction, setDirection] = useState("forward");
 
@@ -41,7 +42,7 @@ const TileCalculator = () => {
         )}
         {inputs.currentStep === 3 && (
           <div className={direction === "forward" ? "animate-[slide-in-left_0.4s_ease-out]" : "animate-[slide-in-right_0.4s_ease-out]"}>
-            <ResultStep onRecalculate={() => goToStep(1)} onBack={() => goToStep(2)} />
+            <ResultStep onRecalculate={() => {  goToStep(1); resetInputs(); }} onBack={() => goToStep(2)} />
           </div>
         )}
         {/* Add similar block for Step 3 if needed */}
