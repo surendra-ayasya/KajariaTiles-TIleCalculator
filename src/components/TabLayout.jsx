@@ -27,10 +27,9 @@ const TabLayout = ({ title, children, bottomActions, bottomNote }) => {
         {/* Left-side info note (only in wall mode) */}
         {bottomNote ? (
           <div className="text-xs text-gray-600 flex items-start gap-2 max-w-md leading-snug">
-            <span className="mt-2 text-sm font-bold"><FiInfo  /></span>
+            <span className="mt-2 text-sm font-bold"><FiInfo /></span>
             <p className="font-bold">
-              The tile quantity is an approximate estimate based on standard assumptions. 
-              For example: standard door size assumed is 3.0 ft × 7.0 ft.
+              {bottomNote}
             </p>
           </div>
         ) : (

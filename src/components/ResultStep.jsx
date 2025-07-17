@@ -4,9 +4,12 @@ import TileInputsContext from "../context/TileInputsContext";
 import TabLayout from "../components/TabLayout";
 
 const ResultStep = ({ onBack, onRecalculate }) => {
-  
+
   const { inputs } = useContext(TileInputsContext);
   const wallMode = inputs.mode === "Wall" || inputs.mode === "wall";
+  const bottomNoteText = wallMode
+    ? "The tile quantity is an approximate estimate based on standard assumptions (e.g., standard door size: 3.0 feet x 7.0 feet) and includes an additional 10% to account for wastage during cutting and installation."
+    : "The tile quantity is an approximate estimate based on standard assumptions (e.g., floor skirting height: 0.33 feet) and includes an additional 10% to account for wastage during cutting and installation.";
 
   return (
     <TabLayout
@@ -32,9 +35,7 @@ const ResultStep = ({ onBack, onRecalculate }) => {
         </div>
       }
       bottomNote={
-        wallMode
-          ? "The tile quantity is an approximate estimate based on standard assumptions (e.g., standard door size: 3.0 feet × 7.0 feet)."
-          : null
+        bottomNoteText
       }
 
     >
