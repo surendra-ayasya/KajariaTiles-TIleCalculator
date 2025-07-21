@@ -9,18 +9,27 @@ const TileSizeStep = ({ onNext, onBack }) => {
 
   const [error, setError] = useState(false);
 
-  const tileSizes = ["1000x1000", "600x600", "300x600"];
+  // All sizes from your image
+  const tileSizes = [
+    "1200x1200", "1200x1800", "1200x2400", "130x800", "150x600", "195x1200",
+    "200x1200", "200x200", "200x232", "200x300", "220x250", "285x1800",
+    "300x1200", "300x300", "300x450", "300x600", "400x400", "600x1200",
+    "600x600", "75x300", "800x1600", "800x2400", "800x2600", "800x800", "80x450"
+  ];
+
   const pcsPerBoxMap = {
-    "1000x1000": 8,
-    "600x600": 5,
-    "300x600": 12,
+    "1200x1200": 2, "1200x1800": 2, "1200x2400": 1, "130x800": 10, "150x600": 8,
+    "195x1200": 4, "200x1200": 6, "200x200": 18, "200x232": 18, "200x300": 15,
+    "220x250": 25, "285x1800": 2, "300x1200": 4, "300x300": 10, "300x450": 10,
+    "300x600": 5, "400x400": 5, "600x1200": 3, "600x600": 4, "75x300": 20,
+    "800x1600": 2, "800x2400": 1, "800x2600": 1, "800x800": 3, "80x450": 30
   };
 
   const handleTileSizeChange = (value) => {
     setInputs({
       ...inputs,
       tileSize: value,
-      peicesPerBox: pcsPerBoxMap[value] || null, // auto-set pcs/box
+      peicesPerBox: pcsPerBoxMap[value] || null,
     });
     setError(false);
   };
@@ -34,7 +43,7 @@ const TileSizeStep = ({ onNext, onBack }) => {
     const result = calculateTiles({
       ...inputs,
       peicesPerBox: inputs.peicesPerBox,
-      wastage: "10", // fixed
+      wastage: "10", // fixed 10%
     });
 
     if (result) {
@@ -75,7 +84,9 @@ const TileSizeStep = ({ onNext, onBack }) => {
     >
       {/* Tile size dropdown */}
       <div className="mb-6">
-        <label className="font-semibold text-sm block mb-2">Select Size of Tiles</label>
+        <label className="font-semibold text-sm block mb-2">
+          Select Size of Tiles
+        </label>
         <select
           value={inputs.tileSize}
           onChange={(e) => handleTileSizeChange(e.target.value)}
@@ -93,7 +104,6 @@ const TileSizeStep = ({ onNext, onBack }) => {
         )}
       </div>
 
-      {/* Auto-show PCS/Box Info */}
       
     </TabLayout>
   );
