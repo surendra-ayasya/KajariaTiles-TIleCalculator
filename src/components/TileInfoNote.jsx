@@ -8,12 +8,12 @@ const TileInfoNote = () => {
   if (!isWall) return null;
 
   return (
-    <div className="mt-6 bg-blue-50 border border-blue-300 text-blue-900 p-4 text-sm rounded-lg">
-      <h4 className="font-semibold mb-1">Wall Tile Calculation</h4>
-      <p>
+    <div className="mt-4 bg-primary bg-opacity-10 border border-primary text-primary p-3 rounded">
+      <h4 className="fw-semibold mb-1 fs-6">Wall Tile Calculation</h4>
+      <p className="mb-1">
         Total Wall Area = 2 × (Bathroom Width + Bathroom Length) × Wall Height
       </p>
-      <p>
+      <p className="mb-1">
         Total Door Area = Door Width × Door Height (Standard Size: 3ft × 7ft)
       </p>
       <p>
@@ -22,4 +22,5 @@ const TileInfoNote = () => {
     </div>
   );
 };
+
 export default TileInfoNote;

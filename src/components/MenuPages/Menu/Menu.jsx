@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import { useNavigate } from 'react-router-dom';
-import Header from '../../Header/Header';
 import frame1 from '../../../Assets/frame1.png';
 import frame2 from '../../../Assets/frame2.png';
 import frame3 from '../../../Assets/frame3.png'; 

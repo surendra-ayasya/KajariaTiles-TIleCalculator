@@ -3,7 +3,14 @@ import TabLayout from "../components/TabLayout";
 import TileInputsContext from "../context/TileInputsContext";
 
 const RoomDimensions = ({ onNext }) => {
-  const { inputs, setInputs } = useContext(TileInputsContext);
+  const context = useContext(TileInputsContext);
+  if (!context) {
+    console.error("TileInputsContext is not provided");
+    return <div>Error: Context not provided</div>;
+  }
+
+  const { inputs = {}, setInputs = () => {} } = context;
+
   const [errors, setErrors] = useState({
     width: false,
     length: false,
@@ -15,25 +22,20 @@ const RoomDimensions = ({ onNext }) => {
   const lengthLbl = wallMode ? "Room Length" : "Floor Length";
 
   useEffect(() => {
-    if (!wallMode) {
-      setInputs((prev) => ({
-        ...prev,
-        skirtingHeight: "0.33", // fixed skirting height for floor mode
-      }));
+    if (!inputs.mode) setInputs((prev) => ({ ...prev, mode: "floor" }));
+    if (!inputs.roomWidth) setInputs((prev) => ({ ...prev, roomWidth: "" }));
+    if (!inputs.roomLength) setInputs((prev) => ({ ...prev, roomLength: "" }));
+    if (wallMode && !inputs.roomHeight) {
+      setInputs((prev) => ({ ...prev, roomHeight: "" }));
+    }
+    if (!wallMode && !inputs.skirtingHeight) {
+      setInputs((prev) => ({ ...prev, skirtingHeight: "0.33" }));
     }
   }, [wallMode, setInputs]);
 
   const handleChange = (field, value) => {
-    setInputs({ ...inputs, [field]: value });
-
-    const errorKey =
-      field === "roomWidth"
-        ? "width"
-        : field === "roomLength"
-        ? "length"
-        : "extra";
-
-    setErrors((prev) => ({ ...prev, [errorKey]: false }));
+    const numericValue = value === "" ? "" : isNaN(value) ? inputs[field] : value;
+    setInputs((prev) => ({ ...prev, [field]: numericValue }));
   };
 
   const handleNext = () => {
@@ -42,9 +44,7 @@ const RoomDimensions = ({ onNext }) => {
       length: inputs.roomLength === "",
       extra: wallMode ? inputs.roomHeight === "" : false,
     };
-
     setErrors(newErrors);
-
     const isValid = !newErrors.width && !newErrors.length && !newErrors.extra;
     if (isValid) onNext();
   };
@@ -58,99 +58,97 @@ const RoomDimensions = ({ onNext }) => {
       title={wallMode ? "Room Dimensions" : "Floor Dimensions"}
       bottomNote={bottomNoteText}
       bottomActions={
-        <div className="w-full flex justify-end">
+        <div className="w-100 d-flex justify-content-end">
           <button
             onClick={handleNext}
-            className="bg-[#0c4a6e] text-white px-6 py-2 font-semibold rounded hover:bg-[#083a56] transition"
+            className="btn text-white px-4 py-2 fw-semibold"
+            style={{
+              backgroundColor: "#0c4a6e",
+              color: "white",
+              padding: "0.5rem 1.5rem",
+              fontWeight: "600",
+              borderRadius: "0.375rem",
+              border: "none",
+              transition: "background-color 0.3s",
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#083a56")}
+            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#0c4a6e")}
           >
             NEXT →
           </button>
         </div>
       }
     >
-      <div
-        className={`grid gap-6 w-full ${
-          wallMode ? "grid-cols-1 lg:grid-cols-3" : "grid-cols-1 lg:grid-cols-2"
-        }`}
-      >
-        {/* Width */}
-        <div className="w-full">
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <label className="font-semibold text-sm">{widthLbl}</label>
-            <select
-              value={inputs.unit}
-              onChange={(e) => handleChange("unit", e.target.value)}
-              className="bg-gray-100 px-2 py-1 rounded-2xl text-sm"
-            >
-              <option>Feet</option>
-              <option>Meters</option>
-            </select>
-          </div>
-          <input
-            type="number"
-            placeholder={`ENTER ${widthLbl.toUpperCase()}`}
-            value={inputs.roomWidth}
-            onChange={(e) => handleChange("roomWidth", e.target.value)}
-            className="border w-full px-3 py-2 text-sm mt-2"
-          />
-          {errors.width && (
-            <p className="text-red-600 text-xs mt-1">{widthLbl} is required.</p>
-          )}
-        </div>
-
-        {/* Length */}
-        <div className="w-full">
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <label className="font-semibold text-sm">{lengthLbl}</label>
-            <select
-              value={inputs.unit}
-              onChange={(e) => handleChange("unit", e.target.value)}
-              className="bg-gray-100 px-2 py-1 rounded-2xl text-sm"
-            >
-              <option>Feet</option>
-              <option>Meters</option>
-            </select>
-          </div>
-          <input
-            type="number"
-            placeholder={`ENTER ${lengthLbl.toUpperCase()}`}
-            value={inputs.roomLength}
-            onChange={(e) => handleChange("roomLength", e.target.value)}
-            className="border w-full px-3 py-2 text-sm mt-2"
-          />
-          {errors.length && (
-            <p className="text-red-600 text-xs mt-1">{lengthLbl} is required.</p>
-          )}
-        </div>
-
-        {/* Height (only for Wall Mode) */}
-        {wallMode && (
-          <div className="w-full">
-            <div className="flex flex-wrap items-center justify-between gap-2">
-              <label className="font-semibold text-sm">Room Height</label>
-              <select
-                value={inputs.unit}
-                onChange={(e) => handleChange("unit", e.target.value)}
-                className="bg-gray-100 px-2 py-1 rounded-2xl text-sm"
-              >
-                <option>Feet</option>
-                <option>Meters</option>
-              </select>
-            </div>
+      <div className="p-3 shadow-sm" style={{ border: "none" }}>
+        <div className="row g-2 align-items-end">
+          <div className="col-md-4">
+            <label className="form-label fw-bold text-black">{widthLbl}</label>
             <input
               type="number"
-              placeholder="ENTER ROOM HEIGHT"
-              value={inputs.roomHeight}
-              onChange={(e) => handleChange("roomHeight", e.target.value)}
-              className="border w-full px-3 py-2 text-sm mt-2"
+              placeholder={`ENTER ${widthLbl.toUpperCase()}`}
+              value={inputs.roomWidth || ""}
+              onChange={(e) => handleChange("roomWidth", e.target.value)}
+              className={`form-control ${errors.width ? "is-invalid" : ""}`}
+              style={{ border: "1px solid #000000", borderRadius: 0 }}
             />
-            {errors.extra && (
-              <p className="text-red-600 text-xs mt-1">
-                Room Height is required.
-              </p>
-            )}
+            <div
+              className="invalid-feedback"
+              style={{
+                minHeight: "1.25rem",
+                display: "block",
+                visibility: errors.width ? "visible" : "hidden",
+              }}
+            >
+              {widthLbl} is required.
+            </div>
           </div>
-        )}
+
+          <div className="col-md-4">
+            <label className="form-label fw-bold text-black">{lengthLbl}</label>
+            <input
+              type="number"
+              placeholder={`ENTER ${lengthLbl.toUpperCase()}`}
+              value={inputs.roomLength || ""}
+              onChange={(e) => handleChange("roomLength", e.target.value)}
+              className={`form-control ${errors.length ? "is-invalid" : ""}`}
+              style={{ border: "1px solid #000000", borderRadius: 0 }}
+            />
+            <div
+              className="invalid-feedback"
+              style={{
+                minHeight: "1.25rem",
+                display: "block",
+                visibility: errors.length ? "visible" : "hidden",
+              }}
+            >
+              {lengthLbl} is required.
+            </div>
+          </div>
+
+          {wallMode && (
+            <div className="col-md-4">
+              <label className="form-label fw-bold text-black">Room Height</label>
+              <input
+                type="number"
+                placeholder="ENTER ROOM HEIGHT"
+                value={inputs.roomHeight || ""}
+                onChange={(e) => handleChange("roomHeight", e.target.value)}
+                className={`form-control ${errors.extra ? "is-invalid" : ""}`}
+                style={{ border: "1px solid #000000", borderRadius: 0 }}
+              />
+              <div
+                className="invalid-feedback"
+                style={{
+                  minHeight: "1.25rem",
+                  display: "block",
+                  visibility: errors.extra ? "visible" : "hidden",
+                }}
+              >
+                Room Height is required.
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </TabLayout>
   );

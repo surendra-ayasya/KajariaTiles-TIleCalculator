@@ -10,8 +10,11 @@ const ModeSelector = () => {
   };
 
   return (
-    <div className="mb-4">
-      <ToggleSwitch value={inputs.mode.toLowerCase()} onChange={handleToggle} />
+    <div className="mb-3">
+      <ToggleSwitch
+        value={inputs.mode?.toLowerCase() || ""}
+        onChange={handleToggle}
+      />
     </div>
   );
 };

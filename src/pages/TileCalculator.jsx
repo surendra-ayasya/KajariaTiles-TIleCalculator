@@ -4,8 +4,6 @@ import TileInputsContext from "../context/TileInputsContext";
 import RoomDimensions from "../components/RoomDimension";
 import TileSizeStep from "../components/TileSizeStep";
 import ResultStep from "../components/ResultStep";
-import Header from "../components/Header/Header";
-
 
 const TileCalculator = () => {
   const { resetInputs } = useContext(TileInputsContext);
@@ -18,36 +16,42 @@ const TileCalculator = () => {
   };
 
   return (
-    <div className="pt-30 mb-36 ">
-      <h1 className="text-4xl font-bold text-center m-6  ">
+    <div className="pt-5 mb-5">
+      <h1 className="display-5 fw-bold text-center mb-3">
         Calculate Your Tile Needs
       </h1>
-      <p className="text-center text-gray-500 mt-2">
-        Quickly determine how many tiles you need for your space. Just enter your dimensions, and let <br />
-        our tool handle the rest—simple, smart, and stress-free.
+      <p className="text-center text-black">
+        Quickly determine how many tiles you need for your space. Just enter your dimensions,<br />
+        and let our tool handle the rest—simple, smart, and stress-free.
       </p>
-      <div className="w-full max-w-6xl mx-auto">
+
+      <div className="container ">
         <StepTabs currentStep={inputs.currentStep} />
 
         {inputs.currentStep === 1 && (
-          <div className={direction === "backward" ? "animate-[slide-in-right_0.4s_ease-out]" : "animate-[slide-in-left_0.4s_ease-out]"}>
+          <div className={direction === "backward" ? "slide-right-animation" : "slide-left-animation"}>
             <RoomDimensions onNext={() => goToStep(2)} />
           </div>
         )}
 
         {inputs.currentStep === 2 && (
-          <div className={direction === "forward" ? "animate-[slide-in-left_0.4s_ease-out]" : "animate-[slide-in-right_0.4s_ease-out]"}>
+          <div className={direction === "forward" ? "slide-left-animation" : "slide-right-animation"}>
             <TileSizeStep onNext={() => goToStep(3)} onBack={() => goToStep(1)} />
           </div>
         )}
+
         {inputs.currentStep === 3 && (
-          <div className={direction === "forward" ? "animate-[slide-in-left_0.4s_ease-out]" : "animate-[slide-in-right_0.4s_ease-out]"}>
-            <ResultStep onRecalculate={() => {  goToStep(1); resetInputs(); }} onBack={() => goToStep(2)} />
+          <div className={direction === "forward" ? "slide-left-animation" : "slide-right-animation"}>
+            <ResultStep
+              onRecalculate={() => {
+                goToStep(1);
+                resetInputs();
+              }}
+              onBack={() => goToStep(2)}
+            />
           </div>
         )}
-        {/* Add similar block for Step 3 if needed */}
       </div>
-
     </div>
   );
 };

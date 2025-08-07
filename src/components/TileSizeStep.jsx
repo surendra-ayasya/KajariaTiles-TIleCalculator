@@ -6,10 +6,8 @@ import TabLayout from "../components/TabLayout";
 const TileSizeStep = ({ onNext, onBack }) => {
   const { inputs, setInputs } = useContext(TileInputsContext);
   const wallMode = inputs.mode === "Wall" || inputs.mode === "wall";
-
   const [error, setError] = useState(false);
 
-  // All sizes from your image
   const tileSizes = [
     "1200x1200", "1200x1800", "1200x2400", "130x800", "150x600", "195x1200",
     "200x1200", "200x200", "200x232", "200x300", "220x250", "285x1800",
@@ -43,7 +41,7 @@ const TileSizeStep = ({ onNext, onBack }) => {
     const result = calculateTiles({
       ...inputs,
       peicesPerBox: inputs.peicesPerBox,
-      wastage: "10", // fixed 10%
+      wastage: "10",
     });
 
     if (result) {
@@ -66,31 +64,36 @@ const TileSizeStep = ({ onNext, onBack }) => {
       title="Select Size of Tiles"
       bottomNote={bottomNoteText}
       bottomActions={
-        <div className="flex justify-end gap-3 items-center">
+        <div className="d-flex justify-content-end align-items-center gap-3 mt-4">
           <button
             onClick={onBack}
-            className="border border-gray-400 text-black px-6 py-2 rounded hover:bg-gray-100 transition"
+            className="btn btn-outline-secondary px-4 py-2"
           >
             ← BACK
           </button>
           <button
             onClick={handleCalculate}
-            className="bg-[#0c4a6e] text-white px-6 py-2 font-semibold rounded hover:bg-[#083a56] transition"
+            className="btn text-white px-4 py-2 fw-semibold"
+            style={{
+              backgroundColor: "#0c4a6e",
+              borderColor: "#0c4a6e",
+            }}
+            onMouseOver={(e) => (e.target.style.backgroundColor = "#083a56")}
+            onMouseOut={(e) => (e.target.style.backgroundColor = "#0c4a6e")}
           >
             CALCULATE NOW →
           </button>
         </div>
       }
     >
-      {/* Tile size dropdown */}
-      <div className="mb-6">
-        <label className="font-semibold text-sm block mb-2">
+      <div className="mb-4">
+        <label className="form-label fw-semibold small mb-2">
           Select Size of Tiles
         </label>
         <select
           value={inputs.tileSize}
           onChange={(e) => handleTileSizeChange(e.target.value)}
-          className="w-full border px-3 py-2 text-sm"
+          className="form-select"
         >
           <option value="">-- Select --</option>
           {tileSizes.map((size) => (
@@ -100,11 +103,11 @@ const TileSizeStep = ({ onNext, onBack }) => {
           ))}
         </select>
         {error && (
-          <p className="text-red-600 text-xs mt-1">Please select a tile size.</p>
+          <div className="text-danger small mt-1">
+            Please select a tile size.
+          </div>
         )}
       </div>
-
-      
     </TabLayout>
   );
 };

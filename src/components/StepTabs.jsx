@@ -7,56 +7,94 @@ const steps = [
 ];
 
 const StepTabs = ({ currentStep }) => {
-  return (
-    <div className="w-full flex flex-col items-center py-6">
-      <div className="relative flex w-full max-w-md justify-between items-center px-6 sm:px-4 xs:px-2">
+  const primaryColor = "#0c4a6e";
 
+  return (
+    <div
+      className="w-100 d-flex flex-column align-items-center"
+      style={{ paddingTop: "3rem", zIndex: 1, position: "relative" }} // lower z-index
+    >
+      <div
+        className="position-relative d-flex w-100 justify-content-between align-items-center px-3"
+        style={{ maxWidth: "28rem" }}
+      >
         {/* Step line container */}
-        <div className="absolute top-3.5 left-0 right-0 px-6 sm:px-4 xs:px-2 z-0 flex justify-between items-center">
+        <div
+          className="position-absolute top-50 start-0 end-0 translate-middle-y d-flex justify-content-between align-items-center px-3"
+          style={{ zIndex: 0 }} // background line has lowest z-index
+        >
           {/* Line from Step 1 to Step 2 */}
-          <div className="flex-1 h-[3px] bg-gray-200 relative ml-5">
+          <div className="flex-grow-1 bg-secondary position-relative ms-4" style={{ height: 3 }}>
             <div
-              className={`h-full bg-[#0c4a6e] transition-all duration-500 ease-in-out`}
+              className="position-absolute top-0 start-0 h-100"
               style={{
+                backgroundColor: primaryColor,
                 width: currentStep >= 2 ? "100%" : "0%",
+                transition: "width 0.5s ease-in-out",
+                zIndex: 1,
               }}
-            ></div>
+            />
           </div>
 
           {/* Line from Step 2 to Step 3 */}
-          <div className="flex-1 h-[3px] bg-gray-200 relative mx-3">
+          <div className="flex-grow-1 bg-secondary position-relative mx-2" style={{ height: 3 }}>
             <div
-              className={`h-full bg-[#0c4a6e] transition-all duration-500 ease-in-out`}
+              className="position-absolute top-0 start-0 h-100"
               style={{
+                backgroundColor: primaryColor,
                 width: currentStep >= 3 ? "100%" : "0%",
+                transition: "width 0.5s ease-in-out",
+                zIndex: 1,
               }}
-            ></div>
+            />
           </div>
         </div>
 
         {/* Step circles with labels */}
-        {steps.map((step) => (
-          <div className="relative z-10 flex flex-col items-center" key={step.id}>
+        {steps.map((step) => {
+          const isActive = currentStep === step.id;
+          const isCompleted = currentStep > step.id;
+          const bgColor = isActive || isCompleted ? primaryColor : "#e5e7eb";
+          const textColor = isActive || isCompleted ? "white" : "black";
+          const borderColor = isActive || isCompleted ? primaryColor : "#d1d5db";
+          const labelColor = currentStep >= step.id ? primaryColor : "black";
+
+          return (
             <div
-              className={`w-7 h-7 flex items-center justify-center rounded-full text-sm font-semibold border transition duration-300 ${
-                currentStep === step.id
-                  ? "bg-[#0c4a6e] text-white border-[#0c4a6e]"
-                  : currentStep > step.id
-                  ? "bg-[#0c4a6e] text-white border-[#0c4a6e]"
-                  : "bg-gray-200 text-black border-gray-300"
-              }`}
+              key={step.id}
+              className="position-relative d-flex flex-column align-items-center"
+              style={{ zIndex: 2 }}
             >
-              {step.id}
+              <div
+                className="d-flex align-items-center justify-content-center rounded-circle border"
+                style={{
+                  width: 46,
+                  height: 46,
+                  fontSize: 12,
+                  fontWeight: 600,
+                  backgroundColor: bgColor,
+                  color: textColor,
+                  borderColor: borderColor,
+                  transition: "all 0.3s",
+                  userSelect: "none",
+                }}
+              >
+                {step.id}
+              </div>
+              <span
+                className="mt-2 fw-semibold"
+                style={{
+                  fontSize: 14,
+                  letterSpacing: "0.05em",
+                  color: labelColor,
+                  userSelect: "none",
+                }}
+              >
+                {step.label}
+              </span>
             </div>
-            <span
-              className={`mt-2 text-xs font-semibold tracking-wide ${
-                currentStep >= step.id ? "text-[#0c4a6e]" : "text-black"
-              }`}
-            >
-              {step.label}
-            </span>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
