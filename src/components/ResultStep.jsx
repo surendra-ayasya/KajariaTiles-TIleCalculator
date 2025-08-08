@@ -7,9 +7,19 @@ const ResultStep = ({ onBack, onRecalculate }) => {
   const { inputs } = useContext(TileInputsContext);
   const wallMode = inputs.mode === "Wall" || inputs.mode === "wall";
 
-  const bottomNoteText = wallMode
-    ? "The tile quantity is an approximate estimate based on standard assumptions (e.g., standard door size: 3.0 feet x 7.0 feet) and includes an additional 10% to account for wastage during cutting and installation."
-    : "The tile quantity is an approximate estimate based on standard assumptions (e.g., floor skirting height: 0.33 feet) and includes an additional 10% to account for wastage during cutting and installation.";
+  const bottomNoteText = wallMode ? (
+    <span style={{ color: "black" }}>
+      The tile quantity is an approximate estimate based on standard
+      and
+      assumptions (e.g., standard door size: 3.0 feet x 7.0 feet) and includes an additional 10% to account for wastage during cutting and installation.
+    </span>
+  ) : (
+    <span style={{ color: "black" }}>
+      The tile quantity is an approximate estimate based on standard
+      and
+      assumptions (e.g., floor skirting height: 0.33 feet) and includes an additional 10% to account for wastage during cutting and installation.
+    </span>
+  );
 
   return (
     <TabLayout
@@ -35,8 +45,12 @@ const ResultStep = ({ onBack, onRecalculate }) => {
               transition: "background-color 0.3s",
               border: "none",
             }}
-            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#083a56")}
-            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#0c4a6e")}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.backgroundColor = "#083a56")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.backgroundColor = "#0c4a6e")
+            }
           >
             RE-CALCULATE →
           </button>
@@ -48,19 +62,36 @@ const ResultStep = ({ onBack, onRecalculate }) => {
         <div className="d-flex flex-column flex-md-row justify-content-center align-items-center gap-4 gap-md-5">
           {/* Tiles */}
           <div className="text-center">
-            <p className="display-4 fw-bold mb-1 text-black">{inputs.totalTilesNeeded}</p>
-            <p className="small fw-semibold text-uppercase text-black" style={{ letterSpacing: "0.1em" }}>
+            <p className="display-4 fw-bold mb-1 text-black">
+              {inputs.totalTilesNeeded}
+            </p>
+            <p
+              className="small fw-semibold text-uppercase text-black"
+              style={{ letterSpacing: "0.1em" }}
+            >
               TILES NEEDED
             </p>
           </div>
 
           {/* Divider */}
-          <div className="d-none d-md-block" style={{ width: "1px", height: "3rem", backgroundColor: "#dee2e6" }}></div>
+          <div
+            className="d-none d-md-block"
+            style={{
+              width: "1px",
+              height: "3rem",
+              backgroundColor: "#dee2e6",
+            }}
+          ></div>
 
           {/* Boxes */}
           <div className="text-center">
-            <p className="display-4 fw-bold mb-1 text-black">{inputs.totalBoxesNeeded}</p>
-            <p className="small fw-semibold text-uppercase text-black" style={{ letterSpacing: "0.1em" }}>
+            <p className="display-4 fw-bold mb-1 text-black">
+              {inputs.totalBoxesNeeded}
+            </p>
+            <p
+              className="small fw-semibold text-uppercase text-black"
+              style={{ letterSpacing: "0.1em" }}
+            >
               BOXES NEEDED
             </p>
           </div>

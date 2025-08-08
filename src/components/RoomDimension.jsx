@@ -25,6 +25,9 @@ const RoomDimensions = ({ onNext }) => {
     if (!inputs.mode) setInputs((prev) => ({ ...prev, mode: "floor" }));
     if (!inputs.roomWidth) setInputs((prev) => ({ ...prev, roomWidth: "" }));
     if (!inputs.roomLength) setInputs((prev) => ({ ...prev, roomLength: "" }));
+    if (!inputs.unitWidth) setInputs((prev) => ({ ...prev, unitWidth: "Feet" }));
+    if (!inputs.unitLength) setInputs((prev) => ({ ...prev, unitLength: "Feet" }));
+    if (!inputs.unitHeight) setInputs((prev) => ({ ...prev, unitHeight: "Feet" }));
     if (wallMode && !inputs.roomHeight) {
       setInputs((prev) => ({ ...prev, roomHeight: "" }));
     }
@@ -38,6 +41,10 @@ const RoomDimensions = ({ onNext }) => {
     setInputs((prev) => ({ ...prev, [field]: numericValue }));
   };
 
+  const handleUnitChange = (field, value) => {
+    setInputs((prev) => ({ ...prev, [field]: value }));
+  };
+
   const handleNext = () => {
     const newErrors = {
       width: inputs.roomWidth === "",
@@ -49,14 +56,37 @@ const RoomDimensions = ({ onNext }) => {
     if (isValid) onNext();
   };
 
-  const bottomNoteText = wallMode
-    ? "The tile quantity is an approximate estimate based on standard assumptions (e.g., standard door size: 3.0 feet x 7.0 feet) and includes an additional 10% to account for wastage during cutting and installation."
-    : "The tile quantity is an approximate estimate based on standard assumptions (e.g., floor skirting height: 0.33 feet) and includes an additional 10% to account for wastage during cutting and installation.";
+  const unitSelectStyle = {
+    backgroundColor: "#f5f6f8",
+    border: "none",
+    borderRadius: "999px",
+    padding: "6px 16px",
+    fontWeight: "500",
+    width: "100%",
+    appearance: "none",
+    WebkitAppearance: "none",
+    MozAppearance: "none",
+    cursor: "pointer",
+  };
 
   return (
     <TabLayout
       title={wallMode ? "Room Dimensions" : "Floor Dimensions"}
-      bottomNote={bottomNoteText}
+      bottomNote={
+        wallMode ? (
+          <span style={{ color: "black" }}>
+            The tile quantity is an approximate estimate based on standard and
+            assumptions (e.g., standard door size: 3.0 feet x 7.0 feet) and includes
+            an additional 10% to account for wastage during cutting and installation.
+          </span>
+        ) : (
+          <span style={{ color: "black" }}>
+            The tile quantity is an approximate estimate based on standard and
+            assumptions (e.g., floor skirting height: 0.33 feet) and includes an
+            additional 10% to account for wastage during cutting and installation.
+          </span>
+        )
+      }
       bottomActions={
         <div className="w-100 d-flex justify-content-end">
           <button
@@ -71,8 +101,12 @@ const RoomDimensions = ({ onNext }) => {
               border: "none",
               transition: "background-color 0.3s",
             }}
-            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#083a56")}
-            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#0c4a6e")}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.backgroundColor = "#083a56")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.backgroundColor = "#0c4a6e")
+            }
           >
             NEXT →
           </button>
@@ -80,17 +114,48 @@ const RoomDimensions = ({ onNext }) => {
       }
     >
       <div className="p-3 shadow-sm" style={{ border: "none" }}>
-        <div className="row g-2 align-items-end">
+        <div className="row g-3">
+          {/* Width */}
           <div className="col-md-4">
-            <label className="form-label fw-bold text-black">{widthLbl}</label>
+            <div className="d-flex justify-content-between align-items-center mb-1">
+              <label className="form-label fw-bold text-black mb-0">
+                {widthLbl}
+              </label>
+              <div style={{ position: "relative", minWidth: "100px" }}>
+                <select
+                  value={inputs.unitWidth || "Feet"}
+                  onChange={(e) => handleUnitChange("unitWidth", e.target.value)}
+                  className="form-select"
+                  style={unitSelectStyle}
+                >
+                  <option>Feet</option>
+                  <option>Meters</option>
+                </select>
+                <span
+                  style={{
+                    position: "absolute",
+                    top: "50%",
+                    right: "12px",
+                    transform: "translateY(-50%)",
+                    pointerEvents: "none",
+                    fontSize: "12px",
+                    color: "#000",
+                  }}
+                >
+                  
+                </span>
+              </div>
+            </div>
+
             <input
               type="number"
               placeholder={`ENTER ${widthLbl.toUpperCase()}`}
               value={inputs.roomWidth || ""}
               onChange={(e) => handleChange("roomWidth", e.target.value)}
               className={`form-control ${errors.width ? "is-invalid" : ""}`}
-              style={{ border: "1px solid #000000", borderRadius: 0 }}
+              style={{ border: "1px solid #000000", borderRadius: "0.375rem" }}
             />
+
             <div
               className="invalid-feedback"
               style={{
@@ -103,16 +168,47 @@ const RoomDimensions = ({ onNext }) => {
             </div>
           </div>
 
+          {/* Length */}
           <div className="col-md-4">
-            <label className="form-label fw-bold text-black">{lengthLbl}</label>
+            <div className="d-flex justify-content-between align-items-center mb-1">
+              <label className="form-label fw-bold text-black mb-0">
+                {lengthLbl}
+              </label>
+              <div style={{ position: "relative", minWidth: "100px" }}>
+                <select
+                  value={inputs.unitLength || "Feet"}
+                  onChange={(e) => handleUnitChange("unitLength", e.target.value)}
+                  className="form-select"
+                  style={unitSelectStyle}
+                >
+                  <option>Feet</option>
+                  <option>Meters</option>
+                </select>
+                <span
+                  style={{
+                    position: "absolute",
+                    top: "50%",
+                    right: "12px",
+                    transform: "translateY(-50%)",
+                    pointerEvents: "none",
+                    fontSize: "12px",
+                    color: "#000",
+                  }}
+                >
+                  
+                </span>
+              </div>
+            </div>
+
             <input
               type="number"
               placeholder={`ENTER ${lengthLbl.toUpperCase()}`}
               value={inputs.roomLength || ""}
               onChange={(e) => handleChange("roomLength", e.target.value)}
               className={`form-control ${errors.length ? "is-invalid" : ""}`}
-              style={{ border: "1px solid #000000", borderRadius: 0 }}
+              style={{ border: "1px solid #000000", borderRadius: "0.375rem" }}
             />
+
             <div
               className="invalid-feedback"
               style={{
@@ -125,16 +221,46 @@ const RoomDimensions = ({ onNext }) => {
             </div>
           </div>
 
+          {/* Height (only in wall mode) */}
           {wallMode && (
             <div className="col-md-4">
-              <label className="form-label fw-bold text-black">Room Height</label>
+              <div className="d-flex justify-content-between align-items-center mb-1">
+                <label className="form-label fw-bold text-black mb-0">
+                  Room Height
+                </label>
+                <div style={{ position: "relative", minWidth: "100px" }}>
+                  <select
+                    value={inputs.unitHeight || "Feet"}
+                    onChange={(e) => handleUnitChange("unitHeight", e.target.value)}
+                    className="form-select"
+                    style={unitSelectStyle}
+                  >
+                    <option>Feet</option>
+                    <option>Meters</option>
+                  </select>
+                  <span
+                    style={{
+                      position: "absolute",
+                      top: "50%",
+                      right: "12px",
+                      transform: "translateY(-50%)",
+                      pointerEvents: "none",
+                      fontSize: "12px",
+                      color: "#000",
+                    }}
+                  >
+                    
+                  </span>
+                </div>
+              </div>
+
               <input
                 type="number"
                 placeholder="ENTER ROOM HEIGHT"
                 value={inputs.roomHeight || ""}
                 onChange={(e) => handleChange("roomHeight", e.target.value)}
                 className={`form-control ${errors.extra ? "is-invalid" : ""}`}
-                style={{ border: "1px solid #000000", borderRadius: 0 }}
+                style={{ border: "1px solid #000000", borderRadius: "0.375rem" }}
               />
               <div
                 className="invalid-feedback"

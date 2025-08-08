@@ -55,9 +55,21 @@ const TileSizeStep = ({ onNext, onBack }) => {
     }
   };
 
-  const bottomNoteText = wallMode
-    ? "The tile quantity is an approximate estimate based on standard assumptions (e.g., standard door size: 3.0 feet x 7.0 feet) and includes an additional 10% to account for wastage during cutting and installation."
-    : "The tile quantity is an approximate estimate based on standard assumptions (e.g., floor skirting height: 0.33 feet) and includes an additional 10% to account for wastage during cutting and installation.";
+  const bottomNoteText = wallMode ? (
+    <span style={{ color: "black" }}>
+      The tile quantity is an approximate estimate based on standard
+      and
+      assumptions (e.g., standard door size: 3.0 feet x 7.0 feet) and includes
+      an additional 10% to account for wastage during cutting and installation.
+    </span>
+  ) : (
+    <span style={{ color: "black" }}>
+      The tile quantity is an approximate estimate based on standard
+      and
+      assumptions (e.g., floor skirting height: 0.33 feet) and includes an
+      additional 10% to account for wastage during cutting and installation.
+    </span>
+  );
 
   return (
     <TabLayout
@@ -78,8 +90,12 @@ const TileSizeStep = ({ onNext, onBack }) => {
               backgroundColor: "#0c4a6e",
               borderColor: "#0c4a6e",
             }}
-            onMouseOver={(e) => (e.target.style.backgroundColor = "#083a56")}
-            onMouseOut={(e) => (e.target.style.backgroundColor = "#0c4a6e")}
+            onMouseOver={(e) =>
+              (e.target.style.backgroundColor = "#083a56")
+            }
+            onMouseOut={(e) =>
+              (e.target.style.backgroundColor = "#0c4a6e")
+            }
           >
             CALCULATE NOW →
           </button>
