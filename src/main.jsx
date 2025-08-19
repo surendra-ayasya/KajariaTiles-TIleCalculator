@@ -1,15 +1,21 @@
-import { StrictMode } from 'react';
-import { createRoot } from 'react-dom/client';
-import './index.css';
-import App from './App.jsx';
-import TileInputsContextProvider from './context/TileInputsContextProvider.jsx';
-import { BrowserRouter } from 'react-router-dom'; // ✅ import Router
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import "./index.css";
+import TileInputsContextProvider from "./context/TileInputsContextProvider.jsx";
+import { BrowserRouter } from "react-router-dom";
 
-createRoot(document.getElementById('root')).render(
+// ✅ import the components directly
+import TileCalculator from "./pages/TileCalculator";
+import KajariaSearch from "./components/KajariaSearch.jsx";
+
+createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <BrowserRouter> {/* ✅ Wrap your app here */}
+    <BrowserRouter>
+            <KajariaSearch />
+
       <TileInputsContextProvider>
-        <App />
+        {/* ✅ Render components directly instead of App */}
+        <TileCalculator />
       </TileInputsContextProvider>
     </BrowserRouter>
   </StrictMode>

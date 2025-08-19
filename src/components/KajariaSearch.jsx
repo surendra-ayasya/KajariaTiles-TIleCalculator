@@ -7,7 +7,6 @@ function KajariaSearch() {
       if (e.message === "Script error.") e.preventDefault();
     }
     window.addEventListener("error", suppressScriptError);
-
     return () => window.removeEventListener("error", suppressScriptError);
   }, []);
 
@@ -25,7 +24,7 @@ function KajariaSearch() {
           }
         });
 
-        // Inject scripts one-by-one
+        // Inject scripts sequentially
         const scripts = Array.from(temp.querySelectorAll('script'));
         function loadScriptsSequentially(scripts, cb) {
           if (!scripts.length) return cb();
@@ -36,27 +35,61 @@ function KajariaSearch() {
         }
 
         loadScriptsSequentially(scripts, () => {
+          // Inject header
           fetch('https://demowebsite.kajariaceramics.com/api/shared-header')
             .then(res => res.text())
             .then(headerHtml => {
               const header = document.getElementById('shared-header');
               if (header) header.innerHTML = headerHtml;
 
+              // Run helper functions from 3rd party
               if (typeof window.attachIframeSearchToggle === 'function') window.attachIframeSearchToggle();
               if (typeof window.reinitKajariaDropdowns === 'function') window.reinitKajariaDropdowns();
               if (typeof window.reinitKajariaMobile === 'function') window.reinitKajariaMobile();
 
-              setTimeout(() => {
-                if (window.bootstrap && window.bootstrap.Dropdown) {
-                  document.querySelectorAll('.dropdown-toggle').forEach(el => {
-                    try {
-                      new window.bootstrap.Dropdown(el);
-                    } catch (e) {}
+              // Explicitly initialize all Bootstrap dropdowns
+              if (window.bootstrap && window.bootstrap.Dropdown) {
+                document.querySelectorAll('.dropdown-toggle').forEach(el => {
+                  try { new window.bootstrap.Dropdown(el); } catch (e) {}
+                });
+              }
+
+              // Manual fallback to ensure submenu works
+              document.querySelectorAll('.dropdown-toggle').forEach(el => {
+                el.addEventListener('click', function(e) {
+                  e.preventDefault();
+
+                  // Close other open dropdowns
+                  document.querySelectorAll('.dropdown.show').forEach(open => {
+                    if (open !== el.closest('.dropdown')) {
+                      open.classList.remove('show');
+                      const menu = open.querySelector('.dropdown-menu');
+                      if (menu) menu.classList.remove('show');
+                    }
                   });
-                }
-              }, 100);
+
+                  // Toggle current dropdown
+                  const parent = el.closest('.dropdown');
+                  if (parent) parent.classList.toggle('show');
+                  const menu = parent?.querySelector('.dropdown-menu');
+                  if (menu) menu.classList.toggle('show');
+
+                  // Optional: ensure submenu stays in viewport horizontally
+                  if (menu) {
+                    const rect = menu.getBoundingClientRect();
+                    if (rect.right > window.innerWidth) {
+                      menu.style.left = 'auto';
+                      menu.style.right = '0';
+                    } else {
+                      menu.style.left = '';
+                      menu.style.right = '';
+                    }
+                  }
+                });
+              });
             });
 
+          // Inject footer
           fetch('https://demowebsite.kajariaceramics.com/api/shared-footer')
             .then(res => res.text())
             .then(footerHtml => {
@@ -69,7 +102,7 @@ function KajariaSearch() {
       });
   }, []);
 
-  return null; // No need to return anything; it's just injecting external content
+  return null;
 }
 
 export default KajariaSearch;

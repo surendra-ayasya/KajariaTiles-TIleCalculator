@@ -12,10 +12,11 @@ const ToggleSwitch = ({ value, onChange }) => {
     backgroundColor: "#0c4a6e",
     borderRadius: "9999px",
     transition: "all 0.3s ease-in-out",
+    zIndex: 0, // stays lowest
   };
 
   const containerStyle = {
-    width: "200px", // equivalent to Tailwind's `w-3xs` (adjust as needed)
+    width: "200px",
     height: "40px",
     backgroundColor: "#f5f5f5",
     border: "2px solid #0c4a6e",
@@ -25,17 +26,19 @@ const ToggleSwitch = ({ value, onChange }) => {
     overflow: "hidden",
     margin: "0.5rem",
     display: "flex",
+    zIndex: 0, // container stays under header
   };
 
   const buttonBase = {
     flex: 1,
-    zIndex: 10,
-    fontSize: "0.875rem", // ~text-sm
+    fontSize: "0.875rem",
     fontWeight: 600,
     transition: "color 0.3s ease",
     background: "none",
     border: "none",
     cursor: "pointer",
+    position: "relative",
+    zIndex: 0, // text/buttons also stay under header
   };
 
   return (

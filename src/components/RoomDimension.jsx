@@ -62,7 +62,7 @@ const RoomDimensions = ({ onNext }) => {
     borderRadius: "999px",
     padding: "6px 16px",
     fontWeight: "500",
-    width: "100%",
+    width: "100px",
     appearance: "none",
     WebkitAppearance: "none",
     MozAppearance: "none",
@@ -101,12 +101,8 @@ const RoomDimensions = ({ onNext }) => {
               border: "none",
               transition: "background-color 0.3s",
             }}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.backgroundColor = "#083a56")
-            }
-            onMouseLeave={(e) =>
-              (e.currentTarget.style.backgroundColor = "#0c4a6e")
-            }
+            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#083a56")}
+            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#0c4a6e")}
           >
             NEXT →
           </button>
@@ -115,164 +111,189 @@ const RoomDimensions = ({ onNext }) => {
     >
       <div className="p-3 shadow-sm" style={{ border: "none" }}>
         <div className="row g-3">
-          {/* Width */}
-          <div className="col-md-4">
-            <div className="d-flex justify-content-between align-items-center mb-1">
-              <label className="form-label fw-bold text-black mb-0">
-                {widthLbl}
-              </label>
-              <div style={{ position: "relative", minWidth: "100px" }}>
-                <select
-                  value={inputs.unitWidth || "Feet"}
-                  onChange={(e) => handleUnitChange("unitWidth", e.target.value)}
-                  className="form-select"
-                  style={unitSelectStyle}
-                >
-                  <option>Feet</option>
-                  <option>Meters</option>
-                </select>
-                <span
+          {/* Floor Mode: Width & Length equally divided with dropdown matching wall mode */}
+          {!wallMode && (
+            <>
+              <div className="col-md-6">
+                <div className="d-flex justify-content-between align-items-center mb-1">
+                  <label className="form-label fw-bold text-black mb-0">{widthLbl}</label>
+                  <div style={{ position: "relative", minWidth: "100px" }}>
+                    <select
+                      value={inputs.unitWidth || "Feet"}
+                      onChange={(e) => handleUnitChange("unitWidth", e.target.value)}
+                      className="form-select"
+                      style={unitSelectStyle}
+                    >
+                      <option>Feet</option>
+                      <option>Meters</option>
+                    </select>
+                  </div>
+                </div>
+                <input
+                  type="number"
+                  placeholder={`ENTER ${widthLbl.toUpperCase()}`}
+                  value={inputs.roomWidth || ""}
+                  onChange={(e) => handleChange("roomWidth", e.target.value)}
+                  className={`form-control ${errors.width ? "is-invalid" : ""}`}
+                  style={{ border: "1px solid #000000", borderRadius: "0.375rem" }}
+                />
+                <div
+                  className="invalid-feedback"
                   style={{
-                    position: "absolute",
-                    top: "50%",
-                    right: "12px",
-                    transform: "translateY(-50%)",
-                    pointerEvents: "none",
-                    fontSize: "12px",
-                    color: "#000",
+                    minHeight: "1.25rem",
+                    display: "block",
+                    visibility: errors.width ? "visible" : "hidden",
                   }}
                 >
-                  
-                </span>
-              </div>
-            </div>
-
-            <input
-              type="number"
-              placeholder={`ENTER ${widthLbl.toUpperCase()}`}
-              value={inputs.roomWidth || ""}
-              onChange={(e) => handleChange("roomWidth", e.target.value)}
-              className={`form-control ${errors.width ? "is-invalid" : ""}`}
-              style={{ border: "1px solid #000000", borderRadius: "0.375rem" }}
-            />
-
-            <div
-              className="invalid-feedback"
-              style={{
-                minHeight: "1.25rem",
-                display: "block",
-                visibility: errors.width ? "visible" : "hidden",
-              }}
-            >
-              {widthLbl} is required.
-            </div>
-          </div>
-
-          {/* Length */}
-          <div className="col-md-4">
-            <div className="d-flex justify-content-between align-items-center mb-1">
-              <label className="form-label fw-bold text-black mb-0">
-                {lengthLbl}
-              </label>
-              <div style={{ position: "relative", minWidth: "100px" }}>
-                <select
-                  value={inputs.unitLength || "Feet"}
-                  onChange={(e) => handleUnitChange("unitLength", e.target.value)}
-                  className="form-select"
-                  style={unitSelectStyle}
-                >
-                  <option>Feet</option>
-                  <option>Meters</option>
-                </select>
-                <span
-                  style={{
-                    position: "absolute",
-                    top: "50%",
-                    right: "12px",
-                    transform: "translateY(-50%)",
-                    pointerEvents: "none",
-                    fontSize: "12px",
-                    color: "#000",
-                  }}
-                >
-                  
-                </span>
-              </div>
-            </div>
-
-            <input
-              type="number"
-              placeholder={`ENTER ${lengthLbl.toUpperCase()}`}
-              value={inputs.roomLength || ""}
-              onChange={(e) => handleChange("roomLength", e.target.value)}
-              className={`form-control ${errors.length ? "is-invalid" : ""}`}
-              style={{ border: "1px solid #000000", borderRadius: "0.375rem" }}
-            />
-
-            <div
-              className="invalid-feedback"
-              style={{
-                minHeight: "1.25rem",
-                display: "block",
-                visibility: errors.length ? "visible" : "hidden",
-              }}
-            >
-              {lengthLbl} is required.
-            </div>
-          </div>
-
-          {/* Height (only in wall mode) */}
-          {wallMode && (
-            <div className="col-md-4">
-              <div className="d-flex justify-content-between align-items-center mb-1">
-                <label className="form-label fw-bold text-black mb-0">
-                  Room Height
-                </label>
-                <div style={{ position: "relative", minWidth: "100px" }}>
-                  <select
-                    value={inputs.unitHeight || "Feet"}
-                    onChange={(e) => handleUnitChange("unitHeight", e.target.value)}
-                    className="form-select"
-                    style={unitSelectStyle}
-                  >
-                    <option>Feet</option>
-                    <option>Meters</option>
-                  </select>
-                  <span
-                    style={{
-                      position: "absolute",
-                      top: "50%",
-                      right: "12px",
-                      transform: "translateY(-50%)",
-                      pointerEvents: "none",
-                      fontSize: "12px",
-                      color: "#000",
-                    }}
-                  >
-                    
-                  </span>
+                  {widthLbl} is required.
                 </div>
               </div>
 
-              <input
-                type="number"
-                placeholder="ENTER ROOM HEIGHT"
-                value={inputs.roomHeight || ""}
-                onChange={(e) => handleChange("roomHeight", e.target.value)}
-                className={`form-control ${errors.extra ? "is-invalid" : ""}`}
-                style={{ border: "1px solid #000000", borderRadius: "0.375rem" }}
-              />
-              <div
-                className="invalid-feedback"
-                style={{
-                  minHeight: "1.25rem",
-                  display: "block",
-                  visibility: errors.extra ? "visible" : "hidden",
-                }}
-              >
-                Room Height is required.
+              <div className="col-md-6">
+                <div className="d-flex justify-content-between align-items-center mb-1">
+                  <label className="form-label fw-bold text-black mb-0">{lengthLbl}</label>
+                  <div style={{ position: "relative", minWidth: "100px" }}>
+                    <select
+                      value={inputs.unitLength || "Feet"}
+                      onChange={(e) => handleUnitChange("unitLength", e.target.value)}
+                      className="form-select"
+                      style={unitSelectStyle}
+                    >
+                      <option>Feet</option>
+                      <option>Meters</option>
+                    </select>
+                  </div>
+                </div>
+                <input
+                  type="number"
+                  placeholder={`ENTER ${lengthLbl.toUpperCase()}`}
+                  value={inputs.roomLength || ""}
+                  onChange={(e) => handleChange("roomLength", e.target.value)}
+                  className={`form-control ${errors.length ? "is-invalid" : ""}`}
+                  style={{ border: "1px solid #000000", borderRadius: "0.375rem" }}
+                />
+                <div
+                  className="invalid-feedback"
+                  style={{
+                    minHeight: "1.25rem",
+                    display: "block",
+                    visibility: errors.length ? "visible" : "hidden",
+                  }}
+                >
+                  {lengthLbl} is required.
+                </div>
               </div>
-            </div>
+            </>
+          )}
+
+          {/* Wall Mode: Unchanged */}
+          {wallMode && (
+            <>
+              <div className="col-md-4">
+                <div className="d-flex justify-content-between align-items-center mb-1">
+                  <label className="form-label fw-bold text-black mb-0">Room Width</label>
+                  <div style={{ position: "relative", minWidth: "100px" }}>
+                    <select
+                      value={inputs.unitWidth || "Feet"}
+                      onChange={(e) => handleUnitChange("unitWidth", e.target.value)}
+                      className="form-select"
+                      style={unitSelectStyle}
+                    >
+                      <option>Feet</option>
+                      <option>Meters</option>
+                    </select>
+                  </div>
+                </div>
+                <input
+                  type="number"
+                  placeholder="ENTER ROOM WIDTH"
+                  value={inputs.roomWidth || ""}
+                  onChange={(e) => handleChange("roomWidth", e.target.value)}
+                  className={`form-control ${errors.width ? "is-invalid" : ""}`}
+                  style={{ border: "1px solid #000000", borderRadius: "0.375rem" }}
+                />
+                <div
+                  className="invalid-feedback"
+                  style={{
+                    minHeight: "1.25rem",
+                    display: "block",
+                    visibility: errors.width ? "visible" : "hidden",
+                  }}
+                >
+                  Room Width is required.
+                </div>
+              </div>
+
+              <div className="col-md-4">
+                <div className="d-flex justify-content-between align-items-center mb-1">
+                  <label className="form-label fw-bold text-black mb-0">Room Length</label>
+                  <div style={{ position: "relative", minWidth: "100px" }}>
+                    <select
+                      value={inputs.unitLength || "Feet"}
+                      onChange={(e) => handleUnitChange("unitLength", e.target.value)}
+                      className="form-select"
+                      style={unitSelectStyle}
+                    >
+                      <option>Feet</option>
+                      <option>Meters</option>
+                    </select>
+                  </div>
+                </div>
+                <input
+                  type="number"
+                  placeholder="ENTER ROOM LENGTH"
+                  value={inputs.roomLength || ""}
+                  onChange={(e) => handleChange("roomLength", e.target.value)}
+                  className={`form-control ${errors.length ? "is-invalid" : ""}`}
+                  style={{ border: "1px solid #000000", borderRadius: "0.375rem" }}
+                />
+                <div
+                  className="invalid-feedback"
+                  style={{
+                    minHeight: "1.25rem",
+                    display: "block",
+                    visibility: errors.length ? "visible" : "hidden",
+                  }}
+                >
+                  Room Length is required.
+                </div>
+              </div>
+
+              <div className="col-md-4">
+                <div className="d-flex justify-content-between align-items-center mb-1">
+                  <label className="form-label fw-bold text-black mb-0">Room Height</label>
+                  <div style={{ position: "relative", minWidth: "100px" }}>
+                    <select
+                      value={inputs.unitHeight || "Feet"}
+                      onChange={(e) => handleUnitChange("unitHeight", e.target.value)}
+                      className="form-select"
+                      style={unitSelectStyle}
+                    >
+                      <option>Feet</option>
+                      <option>Meters</option>
+                    </select>
+                  </div>
+                </div>
+                <input
+                  type="number"
+                  placeholder="ENTER ROOM HEIGHT"
+                  value={inputs.roomHeight || ""}
+                  onChange={(e) => handleChange("roomHeight", e.target.value)}
+                  className={`form-control ${errors.extra ? "is-invalid" : ""}`}
+                  style={{ border: "1px solid #000000", borderRadius: "0.375rem" }}
+                />
+                <div
+                  className="invalid-feedback"
+                  style={{
+                    minHeight: "1.25rem",
+                    display: "block",
+                    visibility: errors.extra ? "visible" : "hidden",
+                  }}
+                >
+                  Room Height is required.
+                </div>
+              </div>
+            </>
           )}
         </div>
       </div>
