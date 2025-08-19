@@ -73,19 +73,18 @@ const RoomDimensions = ({ onNext }) => {
     <TabLayout
       title={wallMode ? "Room Dimensions" : "Floor Dimensions"}
       bottomNote={
-        wallMode ? (
-          <span style={{ color: "black" }}>
-            The tile quantity is an approximate estimate based on standard and
-            assumptions (e.g., standard door size: 3.0 feet x 7.0 feet) and includes
-            an additional 10% to account for wastage during cutting and installation.
-          </span>
-        ) : (
-          <span style={{ color: "black" }}>
-            The tile quantity is an approximate estimate based on standard and
-            assumptions (e.g., floor skirting height: 0.33 feet) and includes an
-            additional 10% to account for wastage during cutting and installation.
-          </span>
-        )
+        <span
+          style={{
+            color: "black",
+            display: "block",
+            width: "600px", // increased width to fit 3 lines
+            lineHeight: "1.5",
+          }}
+        >
+          {wallMode
+            ? "The tile quantity is an approximate estimate based on standard and assumptions (e.g., standard door size: 3.0 feet x 7.0 feet) and includes an additional 10% to account for wastage during cutting and installation."
+            : "The tile quantity is an approximate estimate based on standard and assumptions (e.g., floor skirting height: 0.33 feet) and includes an additional 10% to account for wastage during cutting and installation."}
+        </span>
       }
       bottomActions={
         <div className="w-100 d-flex justify-content-end">
@@ -101,8 +100,12 @@ const RoomDimensions = ({ onNext }) => {
               border: "none",
               transition: "background-color 0.3s",
             }}
-            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#083a56")}
-            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#0c4a6e")}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.backgroundColor = "#083a56")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.backgroundColor = "#0c4a6e")
+            }
           >
             NEXT →
           </button>
@@ -111,7 +114,6 @@ const RoomDimensions = ({ onNext }) => {
     >
       <div className="p-3 shadow-sm" style={{ border: "none" }}>
         <div className="row g-3">
-          {/* Floor Mode: Width & Length equally divided with dropdown matching wall mode */}
           {!wallMode && (
             <>
               <div className="col-md-6">
@@ -186,7 +188,6 @@ const RoomDimensions = ({ onNext }) => {
             </>
           )}
 
-          {/* Wall Mode: Unchanged */}
           {wallMode && (
             <>
               <div className="col-md-4">

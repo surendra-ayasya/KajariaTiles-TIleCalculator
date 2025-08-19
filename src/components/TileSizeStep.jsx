@@ -55,19 +55,18 @@ const TileSizeStep = ({ onNext, onBack }) => {
     }
   };
 
-  const bottomNoteText = wallMode ? (
-    <span style={{ color: "black" }}>
-      The tile quantity is an approximate estimate based on standard
-      and
-      assumptions (e.g., standard door size: 3.0 feet x 7.0 feet) and includes
-      an additional 10% to account for wastage during cutting and installation.
-    </span>
-  ) : (
-    <span style={{ color: "black" }}>
-      The tile quantity is an approximate estimate based on standard
-      and
-      assumptions (e.g., floor skirting height: 0.33 feet) and includes an
-      additional 10% to account for wastage during cutting and installation.
+  const bottomNoteText = (
+    <span
+      style={{
+        color: "black",
+        display: "block",
+        width: "530px", // increased width for 3 lines
+        lineHeight: "1.5",
+      }}
+    >
+      {wallMode
+        ? "The tile quantity is an approximate estimate based on standard and assumptions (e.g., standard door size: 3.0 feet x 7.0 feet) and includes an additional 10% to account for wastage during cutting and installation."
+        : "The tile quantity is an approximate estimate based on standard and assumptions (e.g., floor skirting height: 0.33 feet) and includes an additional 10% to account for wastage during cutting and installation."}
     </span>
   );
 
