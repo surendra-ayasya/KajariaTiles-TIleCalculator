@@ -12,9 +12,10 @@ const ResultStep = ({ onBack, onRecalculate }) => {
       style={{
         color: "black",
         display: "block",
-        width: "550px", // increased width to fit 3 lines
+        width: "550px", // Default width for desktop
         lineHeight: "1.5",
       }}
+      className="bottom-note-text"
     >
       {wallMode
         ? "The tile quantity is an approximate estimate based on standard and assumptions (e.g., standard door size: 3.0 feet x 7.0 feet) and includes an additional 10% to account for wastage during cutting and installation."
@@ -59,6 +60,16 @@ const ResultStep = ({ onBack, onRecalculate }) => {
       }
       bottomNote={bottomNoteText}
     >
+      <style>
+        {`
+          @media (max-width: 576px) {
+            .bottom-note-text {
+              width: 100% !important; /* Full width for mobile */
+              font-size: 0.9rem; /* Slightly smaller font size for mobile */
+            }
+          }
+        `}
+      </style>
       <div className="w-100 pt-4 pb-3">
         <div className="d-flex flex-column flex-md-row justify-content-center align-items-center gap-4 gap-md-5">
           {/* Tiles */}

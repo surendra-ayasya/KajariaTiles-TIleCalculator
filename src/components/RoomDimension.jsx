@@ -17,6 +17,14 @@ const RoomDimensions = ({ onNext }) => {
     extra: false,
   });
 
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const wallMode = inputs.mode?.toLowerCase() === "wall";
   const widthLbl = wallMode ? "Room Width" : "Floor Width";
   const lengthLbl = wallMode ? "Room Length" : "Floor Length";
@@ -69,18 +77,20 @@ const RoomDimensions = ({ onNext }) => {
     cursor: "pointer",
   };
 
+  // Responsive width logic
+  const bottomNoteStyle = {
+    color: "black",
+    display: "block",
+    width: windowWidth > 768 ? "600px" : "100%",
+    lineHeight: "1.5",
+    fontSize: windowWidth < 480 ? "13px" : windowWidth < 768 ? "14px" : "15px",
+  };
+
   return (
     <TabLayout
       title={wallMode ? "Room Dimensions" : "Floor Dimensions"}
       bottomNote={
-        <span
-          style={{
-            color: "black",
-            display: "block",
-            width: "600px", // increased width to fit 3 lines
-            lineHeight: "1.5",
-          }}
-        >
+        <span style={bottomNoteStyle}>
           {wallMode
             ? "The tile quantity is an approximate estimate based on standard and assumptions (e.g., standard door size: 3.0 feet x 7.0 feet) and includes an additional 10% to account for wastage during cutting and installation."
             : "The tile quantity is an approximate estimate based on standard and assumptions (e.g., floor skirting height: 0.33 feet) and includes an additional 10% to account for wastage during cutting and installation."}

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import TileInputsContext from "../context/TileInputsContext";
 import { calculateTiles } from "../utils/calculateTiles";
 import TabLayout from "../components/TabLayout";
@@ -7,6 +7,15 @@ const TileSizeStep = ({ onNext, onBack }) => {
   const { inputs, setInputs } = useContext(TileInputsContext);
   const wallMode = inputs.mode === "Wall" || inputs.mode === "wall";
   const [error, setError] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detect screen width
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 576); // bootstrap "sm"
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const tileSizes = [
     "1200x1200", "1200x1800", "1200x2400", "130x800", "150x600", "195x1200",
@@ -54,14 +63,17 @@ const TileSizeStep = ({ onNext, onBack }) => {
       });
     }
   };
-
-  const bottomNoteText = (
+ const bottomNoteText = (
     <span
       style={{
         color: "black",
         display: "block",
-        width: "530px", // increased width for 3 lines
+        width: isMobile ? "100%" : "530px", // responsive width
         lineHeight: "1.5",
+        wordBreak: "break-word", // ✅ prevents overflow
+        overflowWrap: "break-word", // ✅ modern browser support
+        whiteSpace: "normal", // ✅ ensures wrapping
+        fontSize: isMobile ? "13px" : "15px", // ✅ smaller font on mobile
       }}
     >
       {wallMode
