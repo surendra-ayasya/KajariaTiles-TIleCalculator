@@ -7,12 +7,11 @@ const TileSizeStep = ({ onNext, onBack }) => {
   const { inputs, setInputs } = useContext(TileInputsContext);
   const wallMode = inputs.mode === "Wall" || inputs.mode === "wall";
   const [error, setError] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
-  // Detect screen width
+  // Responsive screen width tracking
   useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 576); // bootstrap "sm"
-    handleResize();
+    const handleResize = () => setWindowWidth(window.innerWidth);
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
@@ -63,31 +62,28 @@ const TileSizeStep = ({ onNext, onBack }) => {
       });
     }
   };
- const bottomNoteText = (
-    <span
-      style={{
-        color: "black",
-        display: "block",
-        width: isMobile ? "100%" : "530px", // responsive width
-        lineHeight: "1.5",
-        wordBreak: "break-word", // ✅ prevents overflow
-        overflowWrap: "break-word", // ✅ modern browser support
-        whiteSpace: "normal", // ✅ ensures wrapping
-        fontSize: isMobile ? "13px" : "15px", // ✅ smaller font on mobile
-      }}
-    >
-      {wallMode
-        ? "The tile quantity is an approximate estimate based on standard and assumptions (e.g., standard door size: 3.0 feet x 7.0 feet) and includes an additional 10% to account for wastage during cutting and installation."
-        : "The tile quantity is an approximate estimate based on standard and assumptions (e.g., floor skirting height: 0.33 feet) and includes an additional 10% to account for wastage during cutting and installation."}
-    </span>
-  );
+
+  // Responsive style for bottom note
+  const bottomNoteStyle = {
+    color: "black",
+    display: "block",
+    width: windowWidth > 768 ? "550px" : "100%",
+    lineHeight: "1.5",
+    fontSize: windowWidth < 480 ? "13px" : windowWidth < 768 ? "14px" : "15px",
+  };
 
   return (
     <TabLayout
       title="Select Size of Tiles"
-      bottomNote={bottomNoteText}
+      bottomNote={
+        <span style={bottomNoteStyle}>
+          {wallMode
+            ? "The tile quantity is an approximate estimate based on standard and assumptions (e.g., standard door size: 3.0 feet x 7.0 feet) and includes an additional 10% to account for wastage during cutting and installation."
+            : "The tile quantity is an approximate estimate based on standard and assumptions (e.g., floor skirting height: 0.33 feet) and includes an additional 10% to account for wastage during cutting and installation."}
+        </span>
+      }
       bottomActions={
-        <div className="d-flex justify-content-end align-items-center gap-3 mt-4">
+        <div className="d-flex justify-content-end align-items-center gap-3 mt-4 w-100">
           <button
             onClick={onBack}
             className="btn btn-outline-secondary px-4 py-2"
@@ -101,11 +97,11 @@ const TileSizeStep = ({ onNext, onBack }) => {
               backgroundColor: "#0c4a6e",
               borderColor: "#0c4a6e",
             }}
-            onMouseOver={(e) =>
-              (e.target.style.backgroundColor = "#083a56")
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.backgroundColor = "#083a56")
             }
-            onMouseOut={(e) =>
-              (e.target.style.backgroundColor = "#0c4a6e")
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.backgroundColor = "#0c4a6e")
             }
           >
             CALCULATE NOW →

@@ -1,34 +1,34 @@
 import React, { useContext, useEffect, useState } from "react";
 import TabLayout from "../components/TabLayout";
 import TileInputsContext from "../context/TileInputsContext";
-
+ 
 const RoomDimensions = ({ onNext }) => {
   const context = useContext(TileInputsContext);
   if (!context) {
     console.error("TileInputsContext is not provided");
     return <div>Error: Context not provided</div>;
   }
-
+ 
   const { inputs = {}, setInputs = () => {} } = context;
-
+ 
   const [errors, setErrors] = useState({
     width: false,
     length: false,
     extra: false,
   });
-
+ 
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-
+ 
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth);
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-
+ 
   const wallMode = inputs.mode?.toLowerCase() === "wall";
   const widthLbl = wallMode ? "Room Width" : "Floor Width";
   const lengthLbl = wallMode ? "Room Length" : "Floor Length";
-
+ 
   useEffect(() => {
     if (!inputs.mode) setInputs((prev) => ({ ...prev, mode: "floor" }));
     if (!inputs.roomWidth) setInputs((prev) => ({ ...prev, roomWidth: "" }));
@@ -43,16 +43,16 @@ const RoomDimensions = ({ onNext }) => {
       setInputs((prev) => ({ ...prev, skirtingHeight: "0.33" }));
     }
   }, [wallMode, setInputs]);
-
+ 
   const handleChange = (field, value) => {
     const numericValue = value === "" ? "" : isNaN(value) ? inputs[field] : value;
     setInputs((prev) => ({ ...prev, [field]: numericValue }));
   };
-
+ 
   const handleUnitChange = (field, value) => {
     setInputs((prev) => ({ ...prev, [field]: value }));
   };
-
+ 
   const handleNext = () => {
     const newErrors = {
       width: inputs.roomWidth === "",
@@ -63,7 +63,7 @@ const RoomDimensions = ({ onNext }) => {
     const isValid = !newErrors.width && !newErrors.length && !newErrors.extra;
     if (isValid) onNext();
   };
-
+ 
   const unitSelectStyle = {
     backgroundColor: "#f5f6f8",
     border: "none",
@@ -76,7 +76,7 @@ const RoomDimensions = ({ onNext }) => {
     MozAppearance: "none",
     cursor: "pointer",
   };
-
+ 
   // Responsive width logic
   const bottomNoteStyle = {
     color: "black",
@@ -85,7 +85,7 @@ const RoomDimensions = ({ onNext }) => {
     lineHeight: "1.5",
     fontSize: windowWidth < 480 ? "13px" : windowWidth < 768 ? "14px" : "15px",
   };
-
+ 
   return (
     <TabLayout
       title={wallMode ? "Room Dimensions" : "Floor Dimensions"}
@@ -98,6 +98,7 @@ const RoomDimensions = ({ onNext }) => {
       }
       bottomActions={
         <div className="w-100 d-flex justify-content-end">
+          <div className="mx-4">
           <button
             onClick={handleNext}
             className="btn text-white px-4 py-2 fw-semibold"
@@ -119,6 +120,7 @@ const RoomDimensions = ({ onNext }) => {
           >
             NEXT →
           </button>
+</div>
         </div>
       }
     >
@@ -160,7 +162,7 @@ const RoomDimensions = ({ onNext }) => {
                   {widthLbl} is required.
                 </div>
               </div>
-
+ 
               <div className="col-md-6">
                 <div className="d-flex justify-content-between align-items-center mb-1">
                   <label className="form-label fw-bold text-black mb-0">{lengthLbl}</label>
@@ -197,7 +199,7 @@ const RoomDimensions = ({ onNext }) => {
               </div>
             </>
           )}
-
+ 
           {wallMode && (
             <>
               <div className="col-md-4">
@@ -234,7 +236,7 @@ const RoomDimensions = ({ onNext }) => {
                   Room Width is required.
                 </div>
               </div>
-
+ 
               <div className="col-md-4">
                 <div className="d-flex justify-content-between align-items-center mb-1">
                   <label className="form-label fw-bold text-black mb-0">Room Length</label>
@@ -269,7 +271,7 @@ const RoomDimensions = ({ onNext }) => {
                   Room Length is required.
                 </div>
               </div>
-
+ 
               <div className="col-md-4">
                 <div className="d-flex justify-content-between align-items-center mb-1">
                   <label className="form-label fw-bold text-black mb-0">Room Height</label>
@@ -311,5 +313,7 @@ const RoomDimensions = ({ onNext }) => {
     </TabLayout>
   );
 };
-
+ 
 export default RoomDimensions;
+ 
+ 
